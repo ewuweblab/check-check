@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="oklch(0.18 0.05 0)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Check Check">
+  <title>Check. Check.</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.svg">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=boska@400&f[]=zodiak@400&f[]=gambetta@400&f[]=gambarino@400&f[]=sentient@400&f[]=erode@400&f[]=bespoke-serif@400&f[]=rowan@400&f[]=author@400&f[]=stardom@400&f[]=melodrama@400&f[]=tanker@400&f[]=ranade@400&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="bg-overlay" aria-hidden="true"></div>
+
+  <div id="pull-indicator" aria-hidden="true">
+    <svg id="pull-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="4" x2="12" y2="20"/>
+      <polyline points="6 14 12 20 18 14"/>
+    </svg>
+    <span id="pull-text">Pull to refresh</span>
+  </div>
+
+  <main id="app">
+    <div id="quote-container">
+      <blockquote id="quote-text"></blockquote>
+      <cite id="quote-author"></cite>
+    </div>
+  </main>
+
+  <div id="hint" aria-live="polite">Pull down for a new quote</div>
+
+  <a id="bewell-link" href="https://inside.ewu.edu/bewell/" target="_blank" rel="noopener noreferrer">Be Well</a>
+
+  <script src="app.js"></script>
+</body>
+</html>

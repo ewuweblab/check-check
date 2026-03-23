@@ -1,0 +1,234 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --transition-speed: 0.5s;
+  --pull-indicator-height: 64px;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background-color: oklch(0.18 0.05 0);
+  color: white;
+  transition: background-color var(--transition-speed) ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  touch-action: pan-y;
+}
+
+/* Background overlay — soft drifting white orbs */
+#bg-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#bg-overlay::before,
+#bg-overlay::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#bg-overlay::before {
+  width: 65%;
+  height: 65%;
+  background: radial-gradient(circle, oklch(1 0 0 / 0.10) 0%, transparent 70%);
+  top: -15%;
+  left: -10%;
+  animation-name: drift-a;
+  animation-duration: 14s;
+}
+
+#bg-overlay::after {
+  width: 55%;
+  height: 55%;
+  background: radial-gradient(circle, oklch(1 0 0 / 0.07) 0%, transparent 70%);
+  bottom: -15%;
+  right: -10%;
+  animation-name: drift-b;
+  animation-duration: 19s;
+}
+
+@keyframes drift-a {
+  from { transform: translate(0, 0)     scale(1);    }
+  to   { transform: translate(42%, 52%) scale(1.28); }
+}
+
+@keyframes drift-b {
+  from { transform: translate(0, 0)      scale(1);    }
+  to   { transform: translate(-38%, -44%) scale(1.18); }
+}
+
+/* Pull indicator */
+#pull-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--pull-indicator-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#pull-indicator.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#pull-indicator.release {
+  color: rgba(255, 255, 255, 1);
+}
+
+#pull-arrow {
+  transition: transform 0.3s ease;
+}
+
+#pull-indicator.release #pull-arrow {
+  transform: rotate(180deg);
+}
+
+/* Main app */
+#app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  transition: transform var(--transition-speed) ease, opacity var(--transition-speed) ease;
+}
+
+#app.refreshing {
+  opacity: 0;
+  transform: translateY(-24px);
+}
+
+#app.entering {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Quote container */
+#quote-container {
+  max-width: 680px;
+  width: 100%;
+  text-align: center;
+}
+
+#quote-text {
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 2rem;
+  font-style: italic;
+  quotes: "\201C" "\201D";
+}
+
+#quote-text::before {
+  content: open-quote;
+}
+
+#quote-text::after {
+  content: close-quote;
+}
+
+#quote-author {
+  display: block;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-style: normal;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+#quote-author::before {
+  content: '— ';
+}
+
+/* Hint text */
+#hint {
+  position: fixed;
+  z-index: 1;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  transition: opacity 1s ease;
+  white-space: nowrap;
+}
+
+#hint.hidden {
+  opacity: 0;
+}
+
+/* Be Well link */
+#bewell-link {
+  position: fixed;
+  z-index: 1;
+  bottom: 1rem;
+  right: 1.25rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+#bewell-link:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Loading state */
+body.loading #quote-container {
+  opacity: 0;
+}
+
+body:not(.loading) #quote-container {
+  transition: opacity 0.4s ease;
+  opacity: 1;
+}
